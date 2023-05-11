@@ -1,4 +1,6 @@
-class Rotar(private val indexMap: Map<Char, Int>, private val dataArr: Array<Char>, private var pos: Int) {
+package board
+
+class Rotar(private val indexMap: Map<Char, Int>, private val dataArr: Array<Char>, private var posStart: Int) {
 
     //region CREATING DEFAULT ROTAR
 
@@ -291,6 +293,8 @@ class Rotar(private val indexMap: Map<Char, Int>, private val dataArr: Array<Cha
     }
 
     //endregion CREATING DEFAULT ROTAR
+
+    private var pos = posStart
 
     fun rotate(c: Char): Char {
         return dataArr[((indexMap[c]!! + pos++) % 26)]
