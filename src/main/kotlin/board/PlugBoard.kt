@@ -3,7 +3,7 @@ package board
 class PlugBoard {
     private val board = mutableMapOf<Char, Char>()
 
-    public fun setPair(c1:Char,c2:Char){
+    fun setPair(c1:Char,c2:Char){
         if (board.containsKey(c1)){
             board.remove(board[c1]!!)
             board.remove(c1)
@@ -18,7 +18,8 @@ class PlugBoard {
     }
 
 
-    public fun getChar(c: Char): Char {
+    fun getChar(c: Char): Char {
         return if (board.containsKey(c)) board[c]!! else c
     }
+    fun getBoard() = board
 }
