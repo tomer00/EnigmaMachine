@@ -1,17 +1,56 @@
 package machine
 
+import Providers
 import board.PlugBoard
 import board.Reflector
-import board.Rotar
+import board.Rotor
 
 class Machine private constructor() {
 
-    private val rotars = arrayOf<Rotar?>(
+    private val rotors = arrayOf<Rotor?>(
         null, null, null
     )
-    private var ref = Reflector(Reflector.reflectors[0])
+    private var ref = Reflector(Providers.provideRef(0))
     private val plugBoard = PlugBoard()
 
+
+    val rotarsInfo = mutableListOf<Int>() // which rotar{1,2,0} startPos{25,23,12}
+    var reflectorInfo = 0
+    fun getPlugBoard() = plugBoard.getBoard()
+
+
+    fun getEncoded(c: Char): Char {
+        if (c in 'a'..'z') {
+
+            var cn = c
+            cn = plugBoard.getChar(cn)
+
+            var cinn = rotors[2]!!.forward(cn - 'a')
+            cinn = rotors[1]!!.forward(cinn)
+            cinn = rotors[0]!!.forward(cinn)
+
+            cn = ref.reflect('a' + cinn)
+
+            cinn = rotors[0]!!.backward(cn-'a')
+            cinn = rotors[1]!!.backward(cinn)
+            cinn = rotors[2]!!.backward(cinn)
+
+
+
+            rotors[2]!!.rotate()
+            return plugBoard.getChar('a'+cinn)
+        } else return c;
+    }
+
+    fun getEncoded(string: String): String {
+        val str = StringBuilder()
+        string.forEach {
+            str.append(getEncoded(it))
+        }
+        return str.toString()
+    }
+
+    //region ::BUILDER--->>
 
     class Builder internal constructor() {
 
@@ -20,23 +59,37 @@ class Machine private constructor() {
         fun build(): Machine = internalMachine
 
         fun setRotars(rotars: Array<Int>, pos: Array<Int>): Builder {
-            internalMachine.rotars[0] = Rotar(Rotar.rotars[0].first, Rotar.rotars[0].second, pos[0])
-            internalMachine.rotars[1] = Rotar(Rotar.rotars[1].first, Rotar.rotars[1].second, pos[1])
-            internalMachine.rotars[2] = Rotar(Rotar.rotars[2].first, Rotar.rotars[2].second, pos[2])
+            val r1 = Rotor(Providers.provideRotor(rotars[0]), null)
+            val r2 = Rotor(Providers.provideRotor(rotars[1]), r1)
+            val r3 = Rotor(Providers.provideRotor(rotars[2]), r2)
+            internalMachine.rotors[0] = r1
+            internalMachine.rotors[1] = r2
+            internalMachine.rotors[2] = r3
+
+            for (i in 0..2) {
+                val p = pos[i] % 26
+                for (j in 0 until p) internalMachine.rotors[i]!!.rotate()
+            }
+
+            internalMachine.rotarsInfo.addAll(rotars)
+            internalMachine.rotarsInfo.addAll(pos)
             return this
         }
 
         fun setReflector(ref: Int): Builder {
-            internalMachine.ref = Reflector(Reflector.reflectors[ref])
+            internalMachine.ref = Reflector(Providers.provideRef(ref))
+            internalMachine.reflectorInfo = ref
             return this
         }
 
-        fun setPlugBoard(pairs: Array<Pair<Char, Char>>) :Builder{
+        fun setPlugBoard(pairs: Array<Pair<Char, Char>>): Builder {
             for (p in pairs) {
                 internalMachine.plugBoard.setPair(p.first, p.second)
             }
             return this
         }
     }
+
+    //endregion ::BUILDER--->>
 
 }
