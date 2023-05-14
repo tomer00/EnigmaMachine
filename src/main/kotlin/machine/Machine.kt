@@ -1,6 +1,6 @@
 package machine
 
-import Providers
+import utils.Providers
 import board.PlugBoard
 import board.Reflector
 import board.Rotor
@@ -20,6 +20,7 @@ class Machine private constructor() {
 
 
     fun getEncoded(c: Char): Char {
+
         if (c in 'a'..'z') {
 
             var cn = c
@@ -31,20 +32,23 @@ class Machine private constructor() {
 
             cn = ref.reflect('a' + cinn)
 
-            cinn = rotors[0]!!.backward(cn-'a')
+            cinn = rotors[0]!!.backward(cn - 'a')
             cinn = rotors[1]!!.backward(cinn)
             cinn = rotors[2]!!.backward(cinn)
 
 
 
             rotors[2]!!.rotate()
-            return plugBoard.getChar('a'+cinn)
-        } else return c;
+            return plugBoard.getChar('a' + cinn) - 32
+        } else if (c in 'A'..'Z')
+            return getEncoded(c + 32) - 32
+
+        return c
     }
 
     fun getEncoded(string: String): String {
         val str = StringBuilder()
-        string.forEach {
+        string.lowercase().forEach {
             str.append(getEncoded(it))
         }
         return str.toString()

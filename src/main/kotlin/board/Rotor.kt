@@ -4,6 +4,13 @@ import java.util.*
 
 class Rotor(data: Array<Int>, private val next: Rotor?) {
 
+    companion object {
+        const val I = 0
+        const val II = 1
+        const val III = 2
+        const val IV = 3
+        const val V = 4
+    }
 
     private val left = LinkedList<Int>()
     private val right = LinkedList<Int>()
@@ -23,7 +30,7 @@ class Rotor(data: Array<Int>, private val next: Rotor?) {
         right.add(right[0])
 
 
-        if (geTop() == 26) next!!.rotate()
+        if (geTop() == 26) next?.rotate()
 
         left.removeFirst()
         right.removeFirst()

@@ -3,7 +3,6 @@ package utils
 import machine.Machine
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.jvm.Throws
 import kotlin.random.Random
 
 class MachineUtils {
@@ -35,7 +34,7 @@ class MachineUtils {
         @Throws(Exception::class)
         fun Machine.saveFile(parentFol: File): File {
             if (!parentFol.isDirectory) throw Exception("Provided file is not Directory")
-            val outFile = File(parentFol,"machine.enigma")
+            val outFile = File(parentFol, "machine.enigma")
             FileOutputStream(outFile).use { fos ->
                 try {
                     fos.write(this.reflectorInfo)
@@ -61,15 +60,77 @@ class MachineUtils {
             }
         }
 
-//        @Throws(Exception::class)
-//        fun File.toMachine(): Machine {
-//
-//        }
-//
-//        @Throws(Exception::class)
-//        fun String.toMachine(): Machine {
-//
-//        }
+        @Throws(Exception::class)
+        fun File.toMachine(): Machine {
+            if (this.extension != "enigma") throw Exception("Provide .enigma file")
+
+            this.inputStream().use { ins ->
+                try {
+                    val bul = Machine.Builder()
+                        .setReflector(ins.read())
+                        .setRotars(
+                            arrayOf(
+                                ins.read(),
+                                ins.read(),
+                                ins.read()
+                            ), arrayOf(
+                                ins.read(),
+                                ins.read(),
+                                ins.read()
+                            )
+                        )
+                    val p = mutableListOf<Pair<Char, Char>>()
+                    while (ins.available() > 0) {
+                        val c1 = ins.read().toChar()
+                        val c2 = ins.read().toChar()
+                        if (c1 !in 'a'..'z' || c2 !in 'a'..'z')
+                            throw Exception("Provided enigma file is not correct...")
+                        p.add(Pair(c1, c2))
+                    }
+                    return bul.setPlugBoard(p.toTypedArray()).build()
+                } catch (e: Exception) {
+                    throw e
+                }
+            }
+        }
+
+        @Throws(Exception::class)
+        fun String.toMachine(): Machine {
+            val sts = this.split('\n')
+            if (sts.size < 4)
+                throw Exception("Provide valid Enigma Machine String...")
+
+            try {
+                //Reflector
+                val bul = Machine.Builder().setReflector(sts[0][sts[0].lastIndex].code - '0'.code)
+
+                //Rotors
+                val rotors = sts[1].subSequence(7, sts[1].length).split(',')
+                val rotorsPos = sts[2].subSequence(10, sts[2].length).split(',')
+                bul.setRotars(
+                    arrayOf(
+                        rotors[0].toInt(),
+                        rotors[1].toInt(),
+                        rotors[2].toInt()
+                    ), arrayOf(
+                        rotorsPos[0].toInt(),
+                        rotorsPos[1].toInt(),
+                        rotorsPos[2].toInt()
+                    )
+                )
+
+                val p = mutableListOf<Pair<Char, Char>>()
+                val pairs = sts[3].subSequence(6, sts[3].length).split(' ')
+                pairs.forEach { kv ->
+                    p.add(Pair(kv[0], kv[1]))
+                }
+                bul.setPlugBoard(p.toTypedArray())
+                return bul.build()
+            } catch (e: Exception) {
+                throw e
+            }
+
+        }
 
         fun generateRandom(): Machine {
             val r = Random(System.currentTimeMillis())
