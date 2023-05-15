@@ -26,8 +26,8 @@ class Rotor(data: Array<Int>, private val next: Rotor?) {
     fun geTop() = left.first + 1
 
     fun rotate() {
-        left.add(left[0])
-        right.add(right[0])
+        left.add(left.first)
+        right.add(right.first)
 
 
         if (geTop() == 26) next?.rotate()
