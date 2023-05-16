@@ -32,10 +32,8 @@ class MachineUtils {
         }
 
         @Throws(Exception::class)
-        fun Machine.saveFile(parentFol: File): File {
-            if (!parentFol.isDirectory) throw Exception("Provided file is not Directory")
-            val outFile = File(parentFol, "machine.enigma")
-            FileOutputStream(outFile).use { fos ->
+        fun Machine.saveFile(file: File) {
+            FileOutputStream(file).use { fos ->
                 try {
                     fos.write(this.reflectorInfo)
                     fos.write(this.rotarsInfo[0])
@@ -53,7 +51,6 @@ class MachineUtils {
                             fos.write(entry.value.code)
                         }
                     }
-                    return outFile
                 } catch (_: Exception) {
                     throw Exception("Some Error Occurred")
                 }

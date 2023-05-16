@@ -41,7 +41,7 @@ class Machine private constructor() {
             rotors[2]!!.rotate()
             return plugBoard.getChar('a' + cinn) - 32
         } else if (c in 'A'..'Z')
-            return getEncoded(c + 32) - 32
+            return getEncoded(c + 32)
 
         return c
     }
@@ -52,6 +52,19 @@ class Machine private constructor() {
             str.append(getEncoded(it))
         }
         return str.toString()
+    }
+    fun resetMachine() {
+        val r1 = Rotor(Providers.provideRotor(rotarsInfo[0]), null)
+        val r2 = Rotor(Providers.provideRotor(rotarsInfo[1]), r1)
+        val r3 = Rotor(Providers.provideRotor(rotarsInfo[2]), r2)
+        this.rotors[0] = r1
+        this.rotors[1] = r2
+        this.rotors[2] = r3
+
+        for (i in 0..2) {
+            val p = rotarsInfo[i + 3] % 26
+            for (j in 0 until p) this.rotors[i]!!.rotate()
+        }
     }
 
     //region ::BUILDER--->>
