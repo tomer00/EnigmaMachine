@@ -11,9 +11,9 @@ class MachineUtils {
             val sb = StringBuilder()
             sb.append("Reflector:${this.reflectorInfo}")
             sb.append('\n')
-            sb.append("Rotars:${this.rotarsInfo[0]},${this.rotarsInfo[1]},${this.rotarsInfo[2]}")
+            sb.append("Rotors:${this.rotarsInfo[0]},${this.rotarsInfo[1]},${this.rotarsInfo[2]}")
             sb.append('\n')
-            sb.append("RotarsPos:${this.rotarsInfo[3]},${this.rotarsInfo[4]},${this.rotarsInfo[5]}")
+            sb.append("RotorsPos:${this.rotarsInfo[3]},${this.rotarsInfo[4]},${this.rotarsInfo[5]}")
             sb.append('\n')
             sb.append("Pairs:")
 
