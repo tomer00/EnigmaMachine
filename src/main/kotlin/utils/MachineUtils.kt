@@ -11,9 +11,9 @@ class MachineUtils {
             val sb = StringBuilder()
             sb.append("Reflector:${this.reflectorInfo}")
             sb.append('\n')
-            sb.append("Rotors:${this.rotarsInfo[0]},${this.rotarsInfo[1]},${this.rotarsInfo[2]}")
+            sb.append("Rotors:${this.rotarsInfo[0]+1},${this.rotarsInfo[1]+1},${this.rotarsInfo[2]+1}")
             sb.append('\n')
-            sb.append("RotorsPos:${this.rotarsInfo[3]},${this.rotarsInfo[4]},${this.rotarsInfo[5]}")
+            sb.append("RotorsPos:${this.rotarsInfo[3]+1}-${this.rotarsInfo[4]+1}-${this.rotarsInfo[5]+1}")
             sb.append('\n')
             sb.append("Pairs:")
 
@@ -103,16 +103,16 @@ class MachineUtils {
 
                 //Rotors
                 val rotors = sts[1].subSequence(7, sts[1].length).split(',')
-                val rotorsPos = sts[2].subSequence(10, sts[2].length).split(',')
+                val rotorsPos = sts[2].subSequence(10, sts[2].length).split('-')
                 bul.setRotars(
                     arrayOf(
-                        rotors[0].toInt(),
-                        rotors[1].toInt(),
-                        rotors[2].toInt()
+                        rotors[0].toInt()-1,
+                        rotors[1].toInt()-1,
+                        rotors[2].toInt()-1
                     ), arrayOf(
-                        rotorsPos[0].toInt(),
-                        rotorsPos[1].toInt(),
-                        rotorsPos[2].toInt()
+                        rotorsPos[0].toInt()-1,
+                        rotorsPos[1].toInt()-1,
+                        rotorsPos[2].toInt()-1
                     )
                 )
 

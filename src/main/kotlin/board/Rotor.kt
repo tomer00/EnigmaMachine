@@ -1,6 +1,6 @@
 package board
 
-import java.util.*
+import java.util.LinkedList
 
 class Rotor(data: Array<Int>, private val next: Rotor?) {
 

@@ -1,4 +1,3 @@
-import board.Reflector
 import machine.Machine
 import utils.ConsoleColors
 import utils.MachineUtils
@@ -6,7 +5,7 @@ import utils.MachineUtils.Companion.saveFile
 import utils.MachineUtils.Companion.toMachine
 import utils.MachineUtils.Companion.toSaveString
 import java.io.File
-import java.util.*
+import java.util.Scanner
 import javax.swing.JFileChooser
 import javax.swing.JPanel
 import javax.swing.filechooser.FileNameExtensionFilter
@@ -88,64 +87,70 @@ fun main() {
                 clearConsole()
                 drawEnigmaMachine()
 
-                var ref = Reflector.`UKW-A`
+                var ref: Int
                 val rotors = arrayOf(0, 0, 0, 0, 0, 0)
                 val plug = mutableListOf<Pair<Char, Char>>()
 
-                println("${ConsoleColors.PURPLE_BRIGHT}\nReflectors --\n")
-                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}  1 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}UKW-A")
-                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}  2 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}UKW-B")
-                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}  3 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}UKW-C\n")
-                print("${ConsoleColors.WHITE_BOLD_BRIGHT}Select Reflector form above : ")
+                println("${ConsoleColors.PURPLE_BRIGHT}\n   Reflectors --\n")
+                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}     1 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}UKW-A")
+                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}     2 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}UKW-B")
+                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}     3 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}UKW-C\n")
+                print("${ConsoleColors.WHITE_BOLD_BRIGHT}   Select Reflector form above : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
 
 
-                var inp = ""
+                var inp: String
                 inp = readln()
                 while (inp[0] !in '1'..'3') {
-                    print("${ConsoleColors.RED_BRIGHT}Invalid choice, please try again : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
+                    print("${ConsoleColors.RED_BRIGHT}   Invalid choice, please try again : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
                     inp = readln()
                 }
                 ref = inp[0].toString().toInt()
 
+                clearConsole()
+                drawEnigmaMachine()
                 val sc = Scanner(System.`in`)
 
-                println("${ConsoleColors.PURPLE_BRIGHT}\nRotors --\n")
-                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}  1 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}I")
-                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}  2 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}II")
-                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}  3 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}III")
-                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}  4 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}VI")
-                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}  5 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}V\n")
-                print("${ConsoleColors.WHITE_BOLD_BRIGHT}Select 3 Rotors form above : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
+                println("${ConsoleColors.PURPLE_BRIGHT}\n   Rotors --\n")
+                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}     1 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}I")
+                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}     2 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}II")
+                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}     3 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}III")
+                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}     4 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}VI")
+                println("${ConsoleColors.YELLOW_BOLD_BRIGHT}     5 ${ConsoleColors.RED_BRIGHT}- ${ConsoleColors.CYAN_BOLD}V\n")
+                print("${ConsoleColors.WHITE_BOLD_BRIGHT}   Select 3 Rotors form above : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
 
                 for (i in 0..2) {
                     rotors[i] = sc.nextInt()
                     while (rotors[i] !in 1..5) {
-                        print("${ConsoleColors.RED_BRIGHT}Invalid choice, please try again : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
+                        print("${ConsoleColors.RED_BRIGHT}   Invalid choice, please try again : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
                         rotors[i] = sc.nextInt()
                     }
                 }
 
-                println("${ConsoleColors.PURPLE_BRIGHT}\nRotors starting Positions")
-                print("${ConsoleColors.WHITE_BOLD_BRIGHT}\nEnter rotor start positions of \nthree rotors respectively -- ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
+                clearConsole()
+                drawEnigmaMachine()
+                println("${ConsoleColors.PURPLE_BRIGHT}\n   Rotors starting Positions")
+                print("${ConsoleColors.WHITE_BOLD_BRIGHT}\n   Enter start positions of three \n   rotors respectively (1-26) -- ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
 
                 for (i in 3..5) {
                     rotors[i] = sc.nextInt()
                     while (rotors[i] !in 1..26) {
-                        print("${ConsoleColors.RED_BRIGHT}Invalid choice, please try again : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
+                        print("${ConsoleColors.RED_BRIGHT}   Invalid choice, please try again : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
                         rotors[i] = sc.nextInt()
                     }
                 }
 
 
-                println("${ConsoleColors.PURPLE_BRIGHT}\n-- Plug-Board --")
-                print("${ConsoleColors.WHITE_BOLD_BRIGHT}\nEnter space separated pairs of chars a-z -- ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
+                clearConsole()
+                drawEnigmaMachine()
+                println("${ConsoleColors.PURPLE_BRIGHT}\n   -- Plug-Board --")
+                print("${ConsoleColors.WHITE_BOLD_BRIGHT}\n   Enter space separated pairs of chars a-z -- ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
 
                 inp = readln()
                 var result = inp.replace("\\s".toRegex(), "")
 
                 val pattern = Regex("[a-zA-Z]+")
-                while (!result.matches(pattern) || (result.length % 2) != 0) {
-                    print("${ConsoleColors.RED_BRIGHT}Invalid chars, please try again : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
+                while (!result.isEmpty() && !result.matches(pattern) || (result.length % 2) != 0) {
+                    print("${ConsoleColors.RED_BRIGHT}   Invalid chars, please try again : ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
                     inp = readln()
                     result = inp.replace("\\s".toRegex(), "")
                 }
@@ -154,6 +159,9 @@ fun main() {
                     plug.add(Pair(result[i], result[i + 1]))
                 }
 
+                for (i in rotors.indices) {
+                    rotors[i]--
+                }
                 m = Machine.Builder()
                     .setReflector(ref - 1)
                     .setRotars(rotors.copyOfRange(0, 3), rotors.copyOfRange(3, 6))
@@ -176,7 +184,7 @@ fun main() {
                 //Handle Success msg
                 print(ConsoleColors.GREEN_BRIGHT)
                 print("${ConsoleColors.GREEN_BRIGHT}  Your File is Saved in ${ConsoleColors.WHITE_BOLD_BRIGHT}${fileEnigma.absolutePath}")
-                print(ConsoleColors.RESET)
+                println(ConsoleColors.RESET)
                 Thread.sleep(2000)
                 drawMenu()
             }
@@ -189,7 +197,7 @@ fun main() {
 
             "7" -> {
                 clearConsole()
-                println("${ConsoleColors.RED_BACKGROUND_BRIGHT}${ConsoleColors.WHITE_BOLD_BRIGHT}Exiting program...${ConsoleColors.RESET}")
+                println("\n${ConsoleColors.RED_BACKGROUND_BRIGHT}${ConsoleColors.WHITE_BOLD_BRIGHT}  ...Shutting Down...   ${ConsoleColors.RESET}")
                 return
             }
 
@@ -202,7 +210,7 @@ fun main() {
 
 }
 
-fun printMachine(m : Machine){
+fun printMachine(m: Machine) {
     println("${ConsoleColors.RED_BACKGROUND_BRIGHT}${ConsoleColors.WHITE_BOLD_BRIGHT}   Your Current Machine Settings are ---   ${ConsoleColors.RESET}\n")
     val mach = m.toSaveString().split('\n')
     val ref = when (mach[0][10]) {
@@ -211,14 +219,28 @@ fun printMachine(m : Machine){
         else -> "UKW-C"
     }
     println("   ${ConsoleColors.CYAN_BOLD}Reflector  ${ConsoleColors.RED_BRIGHT}:- ${ConsoleColors.YELLOW_BOLD_BRIGHT}$ref")
-    println(
-        "   ${ConsoleColors.CYAN_BOLD}Rotors     ${ConsoleColors.RED_BRIGHT}:- ${ConsoleColors.YELLOW_BOLD_BRIGHT}${
-            mach[1].subSequence(
-                7,
-                mach[1].length
-            )
-        }"
-    )
+    val rot1 = mach[1].subSequence(
+        7,
+        mach[1].length
+    ).split(',')
+
+    print("   ${ConsoleColors.CYAN_BOLD}Rotors     ${ConsoleColors.RED_BRIGHT}:- ${ConsoleColors.YELLOW_BOLD_BRIGHT}")
+    val sb = StringBuilder()
+    for (r in rot1) {
+        sb.append(
+            "${
+                when (r) {
+                    "1" -> "I"
+                    "2" -> "II"
+                    "3" -> "III"
+                    "4" -> "IV"
+                    else -> "V"
+                }
+            }-"
+        )
+    }
+    sb.deleteCharAt(sb.lastIndex)
+    println(sb)
     println(
         "   ${ConsoleColors.CYAN_BOLD}RotorsPos  ${ConsoleColors.RED_BRIGHT}:- ${ConsoleColors.YELLOW_BOLD_BRIGHT}${
             mach[2].subSequence(
@@ -229,10 +251,14 @@ fun printMachine(m : Machine){
     )
     println(
         "   ${ConsoleColors.CYAN_BOLD}Plug Pairs ${ConsoleColors.RED_BRIGHT}:- ${ConsoleColors.YELLOW_BOLD_BRIGHT}${
-            mach[3].subSequence(
-                6,
-                mach[3].length
-            )
+            try {
+                mach[3].subSequence(
+                    6,
+                    mach[3].length
+                )
+            } catch (_: Exception) {
+                "No Pairs"
+            }
         }"
     )
     Thread.sleep(2_000)

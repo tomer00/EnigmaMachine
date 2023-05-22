@@ -1,9 +1,9 @@
 package machine
 
-import utils.Providers
 import board.PlugBoard
 import board.Reflector
 import board.Rotor
+import utils.Providers
 
 class Machine private constructor() {
 
