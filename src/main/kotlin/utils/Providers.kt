@@ -2,6 +2,9 @@ package utils
 
 class Providers {
     companion object {
+
+        const val PATH_SRC = "/home/tom/test/enigma/"
+
         fun provideRef(int: Int): Map<Char, Char> {
             return when (int) {
                 0 -> {
